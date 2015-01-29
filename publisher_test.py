@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import pymongo
 import pika
 import time
@@ -41,14 +42,14 @@ for record in results:
     
     Mytime = time.mktime(dt.timetuple())
     #print time.mktime(dt.timetuple())
-    
+
     #mytiem = json.dumps(dt, default=json_util.default)
     val = record['Value']
     
     myMessage = '{ "Value":"' + str(val) + '" , "ID":"' + str(id) + '", "DT":"' + str(Mytime) + '"}' 
 
     channel.basic_publish(exchange='', routing_key='test_queue', body=myMessage, 
-                      properties=pika.BasicProperties(message_id = str(id), timestamp = Mytime) )
+                      properties=pika.BasicProperties(message_id = str(id), timestamp = time.time()))
 
     if iKounter < 10 :
         iKounter += 1
